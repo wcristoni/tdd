@@ -18,19 +18,40 @@
     </dependency>
   </dependencies>
 
-<build>
-  <plugins>
-    <plugin>
-      <groupId>org.jacoco</groupId>
-      <artifactId>jacoco-maven-plugin</artifactId>
-      <version>0.7.5.201505241946</version>
-      <executions>
-        <execution>
-          <id>pre-unit-test</id>
-          <goals>
-            <goal>prepare-agent</goal>
-          </goals>
-	  <configuration>
+  <build>
+    <sourceDirectory>
+      ${project.basedir}/src/java/main
+    </sourceDirectory>
+    <testSourceDirectory>
+      ${project.basedir}/src/java/test
+    </testSourceDirectory>
+    <resources>
+          <resource>
+                 <directory>
+                   ${project.basedir}/src/resources/main
+                 </directory>
+          </resource>
+    </resources>
+    <testResources>
+          <testResource>
+                 <directory>
+                   ${project.basedir}/src/resources/test
+                 </directory>
+          </testResource>
+    </testResources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.5.201505241946</version>
+        <executions>
+          <execution>
+            <id>pre-unit-test</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+        	  <configuration>
                 <!-- Sets the path to the file which contains the execution data. -->
                 <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
                 <!--
@@ -39,38 +60,40 @@
                 -->
                 <propertyName>surefireArgLine</propertyName>
             </configuration>
-        </execution>
-        <execution>
-          <id>post-unit-test</id>
-          <phase>test</phase>
-          <goals>
-            <goal>report</goal>
-          </goals>
- 	  <configuration>
-                <!-- Sets the path to the file which contains the execution data. -->
-                <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-                <!-- Sets the output directory for the code coverage report. -->
-                <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-            </configuration>
-        </execution>
-      </executions>
-    </plugin>
-    <plugin>
-    	<groupId>org.apache.maven.plugins</groupId>
-    	<artifactId>maven-surefire-plugin</artifactId>
-    	<version>2.15</version>
-    	<configuration>
-        	<!-- Sets the VM argument line used when unit tests are run. -->
-        	<argLine>${surefireArgLine}  <!--${failsafeArgLine} --></argLine>
-        	<!-- Skips unit tests if the value of skip.unit.tests property is true -->
-        	<skipTests>${skip.unit.tests}</skipTests>
-        	<!-- Excludes integration tests when unit tests are run. -->
-        	<excludes>
-            	<exclude>**/IT*.java</exclude>
-        	</excludes>
-    	</configuration>
-	</plugin>
-  </plugins>
-</build>
+          </execution>
+
+          <execution>
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+         	  <configuration>
+                        <!-- Sets the path to the file which contains the execution data. -->
+                  <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                  <!-- Sets the output directory for the code coverage report. -->
+                  <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+              </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-surefire-plugin</artifactId>
+      	<version>2.15</version>
+      	<configuration>
+          	<!-- Sets the VM argument line used when unit tests are run. -->
+          	<argLine>${surefireArgLine}  <!--${failsafeArgLine} --></argLine>
+          	<!-- Skips unit tests if the value of skip.unit.tests property is true -->
+          	<skipTests><!-- ${skip.unit.tests}--> </skipTests>
+          	<!-- Excludes integration tests when unit tests are run. -->
+          	<excludes>
+              	<exclude>**/IT*.java</exclude>
+          	</excludes>
+      	</configuration>
+  	</plugin>
+    </plugins>
+  </build>
 
 </project>
